@@ -122,56 +122,128 @@ def procesar_senales(senales):
     return senalesreducidas
 
     
+def Escritura_Salida(nombrearchivo,senalesreducidas):
+    root = ET.Element('senalesReducidas')
+    actual = senalesreducidas.cabeza
+    while actual:
+        senalreducida = actual.dato
+        elemen_senal = ET.SubElement(root,'senal',{'nombre': senalreducida.nombre, 'A': str(senalreducida.A)})
+        grupo_actual = senalreducida.grupos.cabeza
+        while grupo_actual:
+            grupo = grupo_actual.dato
+            grupo_elem = ET.SubElement(elemen_senal,'grupo',{'g':str(grupo['g'])})
+            tiempo_elem = ET.SubElement(grupo_elem,'tiempos')
+            for tiempo in grupo['tiempos']:
+                ET.SubElement(tiempo_elem,'tiempo').text = str(tiempo)
+            dato_elemen = ET.SubElement(grupo_elem,'datosGrupo')
+            dato_actual = grupo['datos'].cabeza
+            while dato_actual:
+                dato = dato_actual.dato
+                ET.SubElement(dato_elemen,'dato',{'A':str(dato['A'])}).text = str(dato['valor'])
+                dato_actual = dato_actual.next
+            grupo_actual = grupo_actual.next
+        actual = actual.next
+    tree = ET.ElementTree(root)
+    tree.write(nombrearchivo,encoding='utf-8',xml_declaration=True)
+
+def graficar(senal):
+    dot = Digraph(format='png')
+    dot.node(senal.nombre)
+
+    grupo_actual = senal.grupos.cabeza
+    while grupo_actual:
+        grupo = grupo_actual.dato
+        group_nombre = f"Grupo {grupo['g']}"
+        dot.node(group_nombre)
+        dot.edge(senal.nombre, group_nombre)
+
+        for tiempo in grupo['tiempos']:
+            dot.node(f"Tiempo {tiempo}")
+            dot.edge(group_nombre, f"Tiempo {tiempo}")
+
+        dato_actual = grupo['datos'].cabeza
+        while dato_actual:
+            dato = dato_actual.dato
+            dot.node(f"Dato A{dato['A']}", label=f"A{dato['A']}:{dato['value']}")
+            dot.edge(f"Tiempo {dato['A']}", f"Dato A{dato['A']}")
+            dato_actual = dato_actual.next
+        
+        grupo_actual = grupo_actual.next
+
+    dot.render(senal.nombre, cleanup=True)
 
 
+def main():
+    Lista = ListaMatriz()
+    senales = ListaMatriz()
 
+    op = 0
+    while op != 7:
+        print('---------------------------------------')
+        print("MENU PRINCIPAL")
+        print("1. Cargar Archivo")
+        print("2. Procesar Archivo")
+        print("3. Escribir Archivo de Salida")
+        print("4. Mostrar Datos del Estudiante")
+        print("5. Generar Grafica")
+        print("6. Inicializar Sistema")
+        print("7. Salir")
+        print('---------------------------------------')
+        print("Elija una opcion de 1 a 7:")
+        op = int(input())
+        if op == 1:
+            # CARGA DE ARCHIVOS
+            print('----------------CARGA DE ARCHIVOS---------------')
+            archivo = input('Ingrese la ruta del archivo XML: ')
+            senales = cargar_senal(archivo)
+            actual = senales.cabeza
+            while actual:
+                Lista.agregar(actual.dato.nombre)
+                actual = actual.next
+            print('Archivo Cargado exitosamente...')
+            input()
+        elif op  == 2:
+            # PROCESAMIENTO DEL ARCHIVO
+            print('------------------PROCESAMIENTO-----------------')
+            if not senales.cabeza:
+                print('No hay datos para procesar.')
+                continue
+            senales_reducidas = procesar_senales(senales)
+            print('Señales procesadas con exito...')
+            input()
+        elif op == 3:
+            # SALIDA DE DATOS EN UN ARCHIVO
+            print('-------------------SALIDA----------------------')
+            if not senales_reducidas:
+                print('Se deben procesar datos primero...')
+                continue
+            output = input('Ingrese el nombre del archivo de salida: ')
+            Escritura_Salida(output,senales_reducidas)
+            print('Archivo de salida creado con exito...')
+            input()
+        elif op == 4:
+            # MOSTRAR INFORMACION DEL ESTUDIANTE
+            print('> Josue Daniel Chavez Portillo')
+            print('> 202100033')
+            print('> Introduccion a la programacion y computacion 2 seccion "C"')
+            print('> Ingenieria en ciencias y sistemas')
+            print('> 6to Semestre :(')
+            input()
+        elif op == 5:
+            # GRAFICA GENERADA
+            print('> Elija la grafica que desea ver')
+            print('> 1. Señales Emitidas')
+            print('> 2. Señales Reducidas')
+            input()
+        elif op == 6:
+            # REINICIO DEL PROGRAMA
+            print('> Reiniciando el sistema...')
+            input()
+        elif op == 7:
+            # Salir
+            print('Hasta la proxima...')
+            input()
+            break
 
-op = 0
-while op != 7:
-    print('---------------------------------------')
-    print("MENU PRINCIPAL")
-    print("1. Cargar Archivo")
-    print("2. Procesar Archivo")
-    print("3. Escribir Archivo de Salida")
-    print("4. Mostrar Datos del Estudiante")
-    print("5. Generar Grafica")
-    print("6. Inicializar Sistema")
-    print("7. Salir")
-    print('---------------------------------------')
-    print("Elija una opcion de 1 a 7:")
-    op = int(input())
-    if op == 1:
-        # CARGA DE ARCHIVOS
-        print('----------------CARGA DE ARCHIVOS---------------')
-        input()
-    elif op  == 2:
-        # PROCESAMIENTO DEL ARCHIVO
-        print('------------------PROCESAMIENTO-----------------')
-        input()
-    elif op == 3:
-        # SALIDA DE DATOS EN UN ARCHIVO
-        print('-------------------SALIDA----------------------')
-        input()
-    elif op == 4:
-        # MOSTRAR INFORMACION DEL ESTUDIANTE
-        print('> Josue Daniel Chavez Portillo')
-        print('> 202100033')
-        print('> Introduccion a la programacion y computacion 2 seccion "C"')
-        print('> Ingenieria en ciencias y sistemas')
-        print('> 6to Semestre :(')
-        input()
-    elif op == 5:
-        # GRAFICA GENERADA
-        print('> Elija la grafica que desea ver')
-        print('> 1. Señales Emitidas')
-        print('> 2. Señales Reducidas')
-        input()
-    elif op == 6:
-        # REINICIO DEL PROGRAMA
-        print('> Reiniciando el sistema...')
-        input()
-    elif op == 7:
-        # Salir
-        print('Hasta la proxima...')
-        input()
-        break
+if __name__ == "__main__":
+    main()
