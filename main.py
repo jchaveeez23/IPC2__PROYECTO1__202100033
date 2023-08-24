@@ -1,5 +1,6 @@
 import xml.etree.ElementTree as ET
 from graphviz import Digraph
+import os
 
 class Nodo:
     def __init__(self,dato):
@@ -55,8 +56,21 @@ class Senal:
         def __init__(self):
             self.filas = ListaMatriz()
 
-        def agregar_fila(self,fila):
-            self.filas.agregar(fila)
+        def agregar_fila(self,nfila,ncol):
+            if not self.filas.cabeza:
+                self.filas.cabeza = Nodo([0]*self.A)
+
+            actual = self.filas.cabeza
+            for x in range(nfila):
+                if actual.next:
+                    actual = actual.next
+                else:
+                    nueva_fila = [0]*self.A
+                    actual.next = Nodo(nueva_fila)
+                    actual = actual.next
+            fila = actual.dato
+            fila[ncol] = 1
+
 
 class Senalreducida:
     def __init__(self,nombre,A):
@@ -89,6 +103,7 @@ def cargar_senal(archivo):
             columna_m = int(dato_elemento.get('A'))
             matriz.agregar_fila(fila_m,columna_m)
         senales.agregar(senal)
+    print('si las guarda xd')
     return senales
 
 def procesar_senales(senales):
@@ -111,7 +126,7 @@ def procesar_senales(senales):
 
             for col_m,valor in enumerate(fila):
                 if valor == 1:
-                    dato = {'A':col_m, 'Valor': 1}
+                    dato = {'A':col_m, 'value': 0}
                     patron_dato['datos'].agregar(dato)
         
         for patron_dato in patrones:
@@ -119,6 +134,7 @@ def procesar_senales(senales):
 
         senalesreducidas.agregar(senalreducida)
         actual = actual.next
+    print('las procesa')
     return senalesreducidas
 
     
@@ -172,6 +188,10 @@ def graficar(senal):
 
     dot.render(senal.nombre, cleanup=True)
 
+def reiniciar():
+    os.system('cls' if os.name == 'nt' else 'clear')
+    main()
+
 
 def main():
     Lista = ListaMatriz()
@@ -207,6 +227,7 @@ def main():
             print('------------------PROCESAMIENTO-----------------')
             if not senales.cabeza:
                 print('No hay datos para procesar.')
+                input()
                 continue
             senales_reducidas = procesar_senales(senales)
             print('Señales procesadas con exito...')
@@ -231,13 +252,28 @@ def main():
             input()
         elif op == 5:
             # GRAFICA GENERADA
-            print('> Elija la grafica que desea ver')
-            print('> 1. Señales Emitidas')
-            print('> 2. Señales Reducidas')
+            if not senales.cabeza:
+                print('Debe Cargar un Archivo primero...')
+                continue
+            nombre_senal = input('Ingrese el nombre de la señal para generar la grafica: ')
+            actual = Lista.cabeza
+            while actual:
+                if actual.dato == nombre_senal:
+                    senal = actual.dato
+                    break
+                actual = actual.next
+            if senal:
+                graficar(senal)
+                print(f'Grafica Generada con Exito para la señal {nombre_senal}')
+            else:
+                print(f'No se enconto la señal {nombre_senal}')
+
             input()
         elif op == 6:
             # REINICIO DEL PROGRAMA
             print('> Reiniciando el sistema...')
+            print('> Sistema Reiniciado...')
+            reiniciar()
             input()
         elif op == 7:
             # Salir
@@ -247,3 +283,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    

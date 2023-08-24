@@ -1,0 +1,14 @@
+<senales>
+    <senal nombre="senal1" t="3" A="4">
+        <dato t="0" A="1" />
+        <dato t="1" A="2" />
+        <dato t="2" A="0" />
+        <dato t="2" A="3" />
+    </senal>
+    <senal nombre="senal2" t="4" A="3">
+        <dato t="0" A="0" />
+        <dato t="1" A="1" />
+        <dato t="2" A="1" />
+        <dato t="3" A="2" />
+    </senal>
+</senales>
