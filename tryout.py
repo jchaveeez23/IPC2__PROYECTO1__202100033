@@ -1,134 +1,17 @@
 import xml.etree.ElementTree as ET
 from graphviz import Digraph
 import os
+'''Utilizando listas dinamicas almacenar los datos de las señales de un archivo xml'''
 class Nodo:
-    def __init__(self, nombre):
-        self.nombre = nombre
+    def __init__(self,dato):
+        self.dato = dato
         self.next = None
-
-class ListaEnlazada:
-    def __init__(self):
-        self.head = None
-
-    def agregar(self, nombre):
-        nuevo_nodo = Nodo(nombre)
-        if self.head is None:
-            self.head = nuevo_nodo
-        else:
-            current = self.head
-            while current.next:
-                current = current.next
-            current.next = nuevo_nodo
-
-    def existe(self, nombre):
-        current = self.head
-        while current:
-            if current.nombre == nombre:
-                return True
-            current = current.next
-        return False
-
-    def obtener(self, index):
-        current = self.head
-        for x in range(index):
-            current = current.next
-        return current.nombre
-    
-    def tamano(self):
-        current = self.head
-        contador = 0
-        while current:
-            contador+=1
-            current = current.next
-        return contador
-    
-    def imprimir(self):
-        current = self.head
-        while current:
-            print(current.nombre)
-            current = current.next
-
-class Senal:
-    def __init__(self, nombre, t, A):
-        self.nombre = nombre
-        self.t = t
-        self.A = A
-        self.matriz = self.Matriz()
-
-    class Matriz:
-        def __init__(self):
-            self.filas = ListaEnlazada()
-
-        def agregar_fila(self, nfila, ncol):
-            if not self.filas.head:
-                self.filas.agregar(nfila)
-            else:
-                if not self.filas.existe(nfila):
-                    self.filas.agregar(nfila)
-
-        def agregar_columna(self, nfila, ncol):
-            current = self.filas.head
-            while current:
-                if current.nombre == nfila:
-                    if not current.next:
-                        current.next = ListaEnlazada()
-                        current.next.agregar(ncol)
-                    else:
-                        if not current.next.existe(ncol):
-                            current.next.agregar(ncol)
-                current = current.next
-
-        def imprimir(self):
-            current = self.filas.head
-            while current:
-                print(current.nombre)
-                current.next.imprimir()
-                current = current.next
-
-        def existe_fila(self, nfila):
-            current = self.filas.head
-            while current:
-                if current.nombre == nfila:
-                    return True
-                current = current.next
-            return False
-
-        def existe_columna(self, nfila, ncol):
-            current = self.filas.head
-            while current:
-                if current.nombre == nfila:
-                    return current.next.existe(ncol)
-                current = current.next
-            return False
-
-        def obtener(self, nfila, ncol):
-            current = self.filas.head
-            while current:
-                if current.nombre == nfila:
-                    return current.next.obtener(ncol)
-                current = current.next
-            return None
-
-        def tamano(self):
-            current = self.filas.head
-            contador = 0
-            while current:
-                contador += 1
-                current = current.next
-            return contador
-        
-        def imprimir(self):
-            current = self.filas.head
-            while current:
-                print(current.nombre)
-                current.next.imprimir()
-                current = current.next
 
 class ListaMatriz:
     def __init__(self):
         self.cabeza = None
-
-    def agregar(self, dato):
+        
+    def agregar(self,dato):
         nuevo_nodo = Nodo(dato)
         if not self.cabeza:
             self.cabeza = nuevo_nodo
@@ -138,140 +21,157 @@ class ListaMatriz:
                 actual = actual.next
             actual.next = nuevo_nodo
 
-    def encontrar(self, dato):
+    def encontrar(self,dato):
         actual = self.cabeza
         index = 0
         while actual:
             if actual.dato.iguales(dato):
                 return index
             actual = actual.next
-            index += 1
+            index +=1
         return -1
-
-    def obtener(self, index):
+    
+    def obtener(self,index):
         actual = self.cabeza
         for x in range(index):
             actual = actual.next
         return actual.dato
-
+    
     def tamano(self):
         actual = self.cabeza
         contador = 0
         while actual:
-            contador += 1
+            contador+=1
             actual = actual.next
         return contador
     
-    def imprimir(self):
-        actual = self.cabeza
-        while actual:
-            print(actual.dato.nombre)
-            actual = actual.next
+class Senal:
+    def __init__(self,nombre,t,A):
+        self.nombre = nombre
+        self.t = t
+        self.A = A
+        self.matriz = self.Matriz()
 
-class Matriz:
-    def __init__(self):
-        self.filas = ListaMatriz()
+    class Matriz:
+        def __init__(self):
+            self.filas = ListaMatriz()
 
-    def agregar_fila(self, nfila, ncol):
-        if not self.filas.cabeza:
-            self.filas.cabeza = Nodo([0] * self.A)
+        def agregar_fila(self,nfila,ncol):
+            if not self.filas.cabeza:
+                for x in range(nfila):
+                    self.filas.agregar(ListaMatriz())
+            else:
+                for x in range(nfila-self.filas.tamano()):
+                    self.filas.agregar(ListaMatriz())
+            actual = self.filas.cabeza
+            for x in range(nfila):
+                actual.dato.agregar(ncol)
+                actual = actual.next
 
-        actual = self.filas.cabeza
-        while actual:
-            if actual.dato[0] == nfila:
-                actual.dato[ncol] = 1
-                break
-            actual = actual.next
+        def agregar(self,fila,columna,dato):
+            self.filas.obtener(fila).agregar(dato)
 
-    def agregar_columna(self, nfila, ncol):
-        if not self.filas.cabeza:
-            self.filas.cabeza = Nodo([0] * self.A)
+        def obtener(self,fila,columna):
+            return self.filas.obtener(fila).obtener(columna)
 
-        actual = self.filas.cabeza
-        while actual:
-            if actual.dato[0] == nfila:
-                actual.dato[ncol] = 1
-                break
-            actual = actual.next
+        def tamano(self):
+            return self.filas.tamano()
 
-    def imprimir(self):
-        actual = self.filas.cabeza
-        while actual:
-            print(actual.dato)
-            actual = actual.next
+        def imprimir(self):
+            actual = self.filas.cabeza
+            while actual:
+                actual.dato.imprimir()
+                actual = actual.next
 
-    def existe_fila(self, nfila):
-        actual = self.filas.cabeza
-        while actual:
-            if actual.dato[0] == nfila:
-                return True
-            actual = actual.next
+    def iguales(self,senal):
+        if self.nombre == senal.nombre:
+            return True
         return False
-    
-    def existe_columna(self, nfila, ncol):
-        actual = self.filas.cabeza
-        while actual:
-            if actual.dato[0] == nfila:
-                return actual.dato[ncol] == 1
-            actual = actual.next
-        return False
-    
-    def obtener(self, nfila, ncol):
-        actual = self.filas.cabeza
-        while actual:
-            if actual.dato[0] == nfila:
-                return actual.dato[ncol]
-            actual = actual.next
-        return None
-    
-    def tamano(self):
-        actual = self.filas.cabeza
-        contador = 0
-        while actual:
-            contador += 1
-            actual = actual.next
-        return contador
-    
+
     def imprimir(self):
-        actual = self.filas.cabeza
-        while actual:
-            print(actual.dato)
-            actual = actual.next
+        print('Nombre: ',self.nombre)
+        print('T: ',self.t)
+        print('A: ',self.A)
+        print('Matriz: ')
+        self.matriz.imprimir()
 
-def cargar_archivo(ruta):
-    tree = ET.parse(ruta)
-    root = tree.getroot()
-    senales = ListaMatriz()
-    for senal in root:
-        nombre = senal.attrib['nombre']
-        t = int(senal.attrib['t'])
-        A = int(senal.attrib['A'])
-        senales.agregar(Senal(nombre, t, A))
-    return senales
+    def graficar(self):
+        dot = Digraph(comment='Grafica de la señal')
+        dot.node('A', 'Nombre: '+self.nombre)
+        dot.node('B', 'T: '+self.t)
+        dot.node('C', 'A: '+self.A)
+        dot.edges(['AB','BC'])
+        dot.render('test-output/round-table.gv', view=True)
 
+senales = ListaMatriz()
+
+def cargar_archivo(archivo):
+    global senales
+    try:
+        tree = ET.parse(archivo)
+        root = tree.getroot()
+        for senal in root:
+            nombre = senal.attrib['nombre']
+            t = senal.attrib['t']
+            A = senal.attrib['A']
+            nueva_senal = Senal(nombre,t,A)
+            for fila in senal:
+                nueva_senal.matriz.agregar_fila(int(fila.attrib['n']),int(fila.attrib['m']))
+                for dato in fila:
+                    nueva_senal.matriz.agregar(int(fila.attrib['n']),int(dato.attrib['n']),int(dato.text))
+            senales.agregar(nueva_senal)
+    except:
+        print('Error al cargar el archivo...')
+        input()
+        return
+    
+'''Utilizando listas dinamicas convertir las señales en señales binarias, si su valores son mayores a 0 se convierten en 1 de lo contrario seguiran siendo 0'''
 def procesar_archivo(senales):
-    for senal in senales:
-        for fila in senal.matriz.filas:
-            for col in fila:
-                senal.matriz.agregar_fila(fila, col)
-                senal.matriz.agregar_columna(fila, col)
-    return senales
+    actual = senales.cabeza
+    while actual:
+        senal = actual.dato
+        for fila_m, fila in enumerate(senal.matriz.filas):
+            for columna_m, columna in enumerate(fila.dato):
+                if columna > 0:
+                    senal.matriz.agregar(fila_m,columna_m,1)
+        actual = actual.next
 
-def escribir_archivo(senales):
-    #Escribir un archivo xml con las señales procesadas
+'''Utilizando listas dinamicas encontrar las filas de la matriz binaria que tengan el mismo patron y agruparlas'''
+def agrupar_patrones(senales):
+    actual = senales.cabeza
+    while actual:
+        senal = actual.dato
+        senalreducida = Senalreducida(senal.nombre,senal.A)
+        patrones = ListaMatriz()
+        for fila_m, fila in enumerate(senal.matriz.filas):
+            patron = Patron(fila)
+            patron_m = patrones.encontrar(patron)
 
-    #Crear el archivo xml
-    archivo = open('salida.xml', 'w')
-    archivo.write('<?xml version="1.0" encoding="UTF-8"?>\n')
-    archivo.write('<data>\n')
-    for senal in senales:
-        archivo.write('\t<senal nombre="'+senal.nombre+'" t="'+str(senal.t)+'" A="'+str(senal.A)+'">\n')
-        for fila in senal.matriz.filas:
-            for col in fila:
-                archivo.write('\t\t<dato t="'+str(fila)+'" A="'+str(col)+'"/>\n')
-        archivo.write('\t</senal>\n')
-    archivo.write('</data>')
-    archivo.close()
+            if patron_m == -1:
+                patrones.agregar(patron)
+                patron_m = patrones.tamano()-1
+
+            patron_dato = patrones.obtener(patron_m)
+            patron_dato.agregar_fila(fila_m,0)
+        actual = actual.next
+
+'''Utilizando listas dinamicas los grupos hechos anteriormente, sumar cada uno de los valores de las filas y columnas de la matriz sin procesar'''
+def sumar_filas_columnas(senales):
+    actual = senales.cabeza
+    while actual:
+        senal = actual.dato
+        senalreducida = Senalreducida(senal.nombre,senal.A)
+        for fila_m, fila in enumerate(senal.matriz.filas):
+            for columna_m, columna in enumerate(fila.dato):
+                if columna > 0:
+                    senal.matriz.agregar(fila_m,columna_m,1)
+        actual = actual.next
+
+
+
+
+
+
 
 def mostrar_datos():
     print('Josue Daniel Chavez Portillo')
@@ -279,20 +179,6 @@ def mostrar_datos():
     print('Introduccion a la programacion y computacion 2 seccion "C"')
     print('Ingenieria en ciencias y sistemas')
     print('6to Semestre :(')
-
-def generar_grafica(senales):
-    #Generar una grafica con graphviz
-    dot = Digraph(comment='Grafica de Señales')
-    for senal in senales:
-        dot.node(senal.nombre, senal.nombre)
-    for senal in senales:
-        for fila in senal.matriz.filas:
-            for col in fila:
-                if senal.matriz.obtener(fila, col) == 1:
-                    dot.edge(fila, col)
-    dot.render('grafica.gv', view=True)
-
-
 
     
 
@@ -302,10 +188,6 @@ def reiniciar():
 
 
 def main():
-    Lista = ListaMatriz()
-    senales = ListaMatriz()
-
-    op = 0
     while op != 7:
         print('---------------------------------------')
         print("MENU PRINCIPAL")
