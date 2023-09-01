@@ -5,7 +5,7 @@ listSenales = ListSenales()
 def main():
     global listSenales
 
-    print("Hello World!")
+    print("Bienvenido al programa de analisis de señales!")
     input("Press Enter to continue...")
 
     flag = True
@@ -70,7 +70,7 @@ def mostrarDatos():
     imprimirTitulo("Datos del estudiante")
     print("Josue Daniel Chavez Portillo")
     print("Carnet: 202100033")
-    print("Introduccion a la Programacién y computacién 2 seccion 'C'")
+    print("Introduccion a la Programación y computación 2 seccion 'C'")
     print("Ingenieria en Ciencias y Sistemas")
     print("6to Semestre")
     input("Press Enter to continue...")

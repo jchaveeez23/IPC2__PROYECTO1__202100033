@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<senalesReducidas>
+   <senal nombre="Ejemplo1" A="5">
+        <grupo g="1">
+            <tiempos>1,2</tiempos>
+            <datosGrupos>
+                <dato A="1">1</dato>
+                <dato A="2">2</dato>
+                <dato A="3">3</dato>
+                <dato A="4">4</dato>
+                <dato A="5">5</dato>
+            </datosGrupos>
+        </grupo>
+        <grupo g="2">
+            <tiempos>3</tiempos>
+            <datosGrupos>
+                <dato A="1">1</dato>
+                <dato A="2">2</dato>
+                <dato A="3">3</dato>
+                <dato A="4">4</dato>
+                <dato A="5">5</dato>
+            </datosGrupos>
+        </grupo>
+    </senal>
+   <senal nombre="Ejemplo2" A="2">
+        <grupo g="1">
+            <tiempos>1,2</tiempos>
+            <datosGrupos>
+                <dato A="1">1</dato>
+                <dato A="2">2</dato>
+            </datosGrupos>
+        </grupo>
+        <grupo g="2">
+            <tiempos>3</tiempos>
+            <datosGrupos>
+                <dato A="1">1</dato>
+                <dato A="2">2</dato>
+            </datosGrupos>
+        </grupo>
+        <grupo g="3">
+            <tiempos>4</tiempos>
+            <datosGrupos>
+                <dato A="1">1</dato>
+                <dato A="2">2</dato>
+            </datosGrupos>
+        </grupo>
+    </senal>
+   <senal nombre="Ejemplo3" A="4">
+        <grupo g="1">
+            <tiempos>1,2,5</tiempos>
+            <datosGrupos>
+                <dato A="1">1</dato>
+                <dato A="2">2</dato>
+                <dato A="3">3</dato>
+                <dato A="4">4</dato>
+            </datosGrupos>
+        </grupo>
+        <grupo g="2">
+            <tiempos>3,4</tiempos>
+            <datosGrupos>
+                <dato A="1">1</dato>
+                <dato A="2">2</dato>
+                <dato A="3">3</dato>
+                <dato A="4">4</dato>
+            </datosGrupos>
+        </grupo>
+    </senal>
+</senalesReducidas>
