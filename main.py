@@ -33,6 +33,8 @@ def main():
             listSenales.generarGrafica()
         elif option == "6":
             listSenales = ListSenales()
+            imprimirTitulo("Sistema Reiniciado")
+            input("Press Enter to continue...")
         elif option == "7":
             flag = False
         else:
