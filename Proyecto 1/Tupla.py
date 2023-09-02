@@ -32,9 +32,7 @@ class Tupla:
             temp = temp.next
 
     def sumaDatos(self, datos):
-        patron = ""
         for i in range(1, self.amplitud + 1):
             tuplaDato = self.datos.searchDatoAmplitud(i)
             dato = datos.searchDatoAmplitud(i)
             tuplaDato.setNombre(tuplaDato.getNombre() + dato.getNombre())
-            patron = patron + str(tuplaDato.getNombre()) + ","

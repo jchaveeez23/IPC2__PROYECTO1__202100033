@@ -1,0 +1,31 @@
+graph Ejemplo1 {
+node [color=black];
+nn00;
+nn00 [label = "Ejemplo1 reducida";];
+nna [label = "A=5";];
+nn00 -- nna;
+gt1 [label = "g=1(t=1,2)";];
+nn00 -- gt1;
+nn00 -- nn11;
+nn11 [label = "96";];
+nn00 -- nn12;
+nn12 [label = "114";];
+nn00 -- nn13;
+nn13 [label = "0";];
+nn00 -- nn14;
+nn14 [label = "0";];
+nn00 -- nn15;
+nn15 [label = "0";];
+gt2 [label = "g=2(t=3)";];
+gt1 -- gt2;
+nn11 -- nn21;
+nn21 [label = "0";];
+nn12 -- nn22;
+nn22 [label = "0";];
+nn13 -- nn23;
+nn23 [label = "86";];
+nn14 -- nn24;
+nn24 [label = "43";];
+nn15 -- nn25;
+nn25 [label = "3";];
+}

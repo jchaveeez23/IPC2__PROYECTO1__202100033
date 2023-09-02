@@ -4,10 +4,18 @@ from ListSenales import ListSenales
 listSenales = ListSenales()
 def main():
     global listSenales
+    test = False
 
-    print("Bienvenido al programa de analisis de señales!")
+    if test:
+        path = ""
+        listSenales.leerArchivo(path)
+        listSenales.analizarSenales()
+        listSenales.generarGraficas()
+        return
+
+    print("Bienvenido al Analizador de Señales!")
     input("Press Enter to continue...")
-
+    
     flag = True
     while flag:
         imprimirTitulo("Menu Principal")
@@ -30,11 +38,10 @@ def main():
         elif option == "4":
             mostrarDatos()
         elif option == "5":
-            listSenales.generarGrafica()
+            listSenales.generarGraficas()
         elif option == "6":
             listSenales = ListSenales()
-            imprimirTitulo("Sistema Reiniciado")
-            input("Press Enter to continue...")
+            print("Sistema inicializado con éxito")
         elif option == "7":
             flag = False
         else:
@@ -70,7 +77,7 @@ def escribirArchivo():
 
 def mostrarDatos():
     imprimirTitulo("Datos del estudiante")
-    print("Josue Daniel Chavez Portillo")
+    print("Nombre: Josue Daniel Chavez Portillo")
     print("Carnet: 202100033")
     print("Introduccion a la Programación y computación 2 seccion 'C'")
     print("Ingenieria en Ciencias y Sistemas")

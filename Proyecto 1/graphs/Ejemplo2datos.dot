@@ -1,0 +1,25 @@
+graph Ejemplo2 {
+node [color=black];
+nn00;
+nn00 [label = "Ejemplo2";];
+nnt [label = "t=4";];
+nna [label = "A=2";];
+nn00 -- nnt;
+nn00 -- nna;
+nn00 -- nn11;
+nn11 [label = "4";];
+nn00 -- nn12;
+nn12 [label = "0";];
+nn11 -- nn21;
+nn21 [label = "9";];
+nn12 -- nn22;
+nn22 [label = "0";];
+nn21 -- nn31;
+nn31 [label = "0";];
+nn22 -- nn32;
+nn32 [label = "0";];
+nn31 -- nn41;
+nn41 [label = "0";];
+nn32 -- nn42;
+nn42 [label = "21";];
+}
